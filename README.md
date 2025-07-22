@@ -12,9 +12,9 @@ This template provides infrastructure and demo serving with a web interface for 
 
 1. Create your project repo using the template and clone in locally
 2. Set your environment variables in the directory in a new `.env` file
-3. Create the local `.venv` for the repository by running ```./bin/bootstrap.sh```
+3. Create the local `.venv-crewai` for the repository by running ```./bin/bootstrap.sh```
    - follow any instructions to install python3 and python3-venv if necessary
-   - when the script completes, activate the environment with `source .venv/bin/activate` (on Mac, pc is slightly different)
+   - when the script completes, activate the environment with `source .venv-crewai/bin/activate` (on Mac, pc is slightly different)
    - Re-run the script to install any new packages added to requirements
 4. Make sure [docker](https://docs.docker.com/get-started/get-docker/) is running on your laptop in the background.
 5. Run the demo server from the project root with ```./bin/run_agent.sh --build```
