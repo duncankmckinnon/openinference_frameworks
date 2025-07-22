@@ -34,7 +34,7 @@ if ! command -v uv &> /dev/null; then
 fi
 
 # Create virtual environment if it doesn't exist
-if [ ! -d ".venv" ]; then
+if [ ! -d ".venv-crewai" ]; then
     echo -e "${GREEN}Creating new virtual environment with Python 3.12...${NC}"
     uv venv --python 3.12 .venv-crewai
 else
