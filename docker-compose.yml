@@ -15,8 +15,8 @@ services:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
       - OPENAI_TEMPERATURE=${OPENAI_TEMPERATURE:-0.2}
-      - PHOENIX_COLLECTOR_ENDPOINT=http://phoenix:4317
       - PYTHONUNBUFFERED=1
+      - PHOENIX_COLLECTOR_ENDPOINT=http://phoenix:6006/v1/traces
     depends_on:
       - phoenix
     command: >
