@@ -11,21 +11,23 @@ NC='\033[0m' # No Color
 echo -e "${GREEN}Starting bootstrap process...${NC}"
 
 # Check if Python 3 is installed
-if ! command -v python3 &> /dev/null; then
-    echo -e "${RED}Python 3 is not installed. Please install Python 3 first.${NC}"
+if ! command -v python3.12 &> /dev/null; then
+    echo -e "${RED}Python 3.12 is not installed. Please install Python 3.12 first.${NC}"
+    echo -e "${RED}On macOS, you can install it with the following command:${NC}"
+    echo -e "${RED}brew install python@3.12${NC}"
     exit 1
 fi
 
 # Check if venv module is available
-if ! python3 -c "import venv" &> /dev/null; then
-    echo -e "${RED}Python venv module is not available. Please install python3-venv package.${NC}"
+if ! python3.12 -c "import venv" &> /dev/null; then
+    echo -e "${RED}Python venv module is not available. Please install python3.12-venv package.${NC}"
     exit 1
 fi
 
 # Create virtual environment if it doesn't exist
 if [ ! -d ".venv" ]; then
     echo -e "${GREEN}Creating new virtual environment...${NC}"
-    python3 -m venv .venv
+    python3.12 -m venv .venv
 else
     echo -e "${GREEN}Virtual environment already exists.${NC}"
 fi
@@ -36,7 +38,7 @@ source .venv/bin/activate
 
 # Upgrade pip
 echo -e "${GREEN}Upgrading pip...${NC}"
-python -m pip install --upgrade pip
+python3.12 -m pip install --upgrade pip
 
 # Install requirements if requirements.txt exists
 if [ -f "requirements.txt" ]; then
