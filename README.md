@@ -1,4 +1,4 @@
-# Agentic Template and Demo Server
+# OpenAI Template and Demo Server
 
 This template provides infrastructure and demo serving with a web interface for interacting with LLM providers and agentic systems. The template uses OpenAI as the llm, but any agentic framework can be plugged in to serve the incoming requests. The point is to make it easy to run and interact with an agent, gain visibility into the internal process through Phoenix, and produce an interactive demo of the system that is quick and easy to run.
 
@@ -12,9 +12,9 @@ This template provides infrastructure and demo serving with a web interface for 
 
 1. Create your project repo using the template and clone in locally
 2. Set your environment variables in the directory in a new `.env` file
-3. Create the local `.venv` for the repository by running ```./bin/bootstrap.sh```
+3. Create the local `.venv-openai` for the repository by running ```./bin/bootstrap.sh```
    - follow any instructions to install python3 and python3-venv if necessary
-   - when the script completes, activate the environment with `source .venv/bin/activate` (on Mac, pc is slightly different)
+   - when the script completes, activate the environment with `source .venv-openai/bin/activate` (on Mac, pc is slightly different)
    - Re-run the script to install any new packages added to requirements
 4. Make sure [docker](https://docs.docker.com/get-started/get-docker/) is running on your laptop in the background.
 5. Run the demo server from the project root with ```./bin/run_agent.sh --build```
@@ -28,7 +28,7 @@ To re-run the containers without building:
 
 The agent is configured to use OpenAI. This is controlled through environment variables in your `.env` file. If you're comfortable editing the provider and docker-compose, you can switch these variables to whatever the agent requires to run (these are for the default provider - OpenAI). The phoenix collector and fastapi endpoint will be fixed when running locally.
 
-### For OpenAI (Default)
+### Environment Variables
 ```env
 OPENAI_API_KEY="your-openai-api-key"
 OPENAI_MODEL="gpt-4"
@@ -115,52 +115,4 @@ You may need to adjust this to handle other specific information the system need
 The built in caching logic is in [`agent/caching.py`](https://github.com/duncankmckinnon/AgentTemplate/tree/main/agent/caching.py). It implements a basic LRU cache to store requests and responses during the conversation and surface them on subsequent interactions within the session. 
 
 If you need to include additional context in the cache, the caching may need to be augmented to store other useful information separately (so it only needs to be retrieved and persisted one time - e.g. customer profile info).
-
-## Changing Frameworks or LLM providers
-
-If you do need to switch the framework from (e.g. from `OpenAI` to `CrewAI`), you can follow these steps without any other changes: 
-1. Find the appropriate python package for setting up and running the agent or sending request to the llm
-   * `from openai import OpenAI` -> `from crewai import Agents, Crew`
-2. In the [agent](https://github.com/duncankmckinnon/AgentTemplate/tree/main/agent/agent.py) update `setup_client` to include the instantiation of the framework and return the client that executes on requests.
-3. In the function `agent.analyze_request`, update how the client is being called to match the framework's semantic conventions
-   * current implementation with openai:
-   ```python
-      self.client = setup_client() # openai client
-      ...
-      with using_session(session_id):
-        response = (
-          self.client.chat.completions.create(
-            model=self.model,
-            messages=prompt,
-          )
-          .choices[0]
-          .message
-          .content
-        ).strip()
-   ```
-   * other framework - (crewai):
-   ```python
-      self.client = setup_client(prompts, ...) # crewai agent executable
-      ...
-      with using_session(session_id):
-        response = self.client.kickoff(inputs={"request": request}).raw
-   ``` 
-5. Find the appropriate [open-inference](https://github.com/Arize-ai/openinference) package (e.g. `openinference-instrumentation-crewai`)
-6. Update the requirements to use the python package and open-inference auto-instrumenter you're using
-   * `openai` -> `crewai`
-   * `openinference-instrumentation-openai` -> `openinference-instrumentation-crewai`
-7. Change the imports and the single line auto-instrumentation setup (noted in comments) in the [server](https://github.com/duncankmckinnon/AgentTemplate/tree/main/agent/server.py)
-   * `from openinference.instrumentation.openai import OpenAIInstrumentor` -> `from openinference.instrumentation.crewai import CrewAIInstrumentor`
-   * `OpenAIInstrumentor().instrument(tracer_provider)` -> `CrewAIInstrumentor().instrument(tracer_provider)`
-   * as an aside - agentic framework instrumentation with `CrewAIInstrumentor` works best in Phoenix when instantiated along with `LangChainInstrumentor` and the instrumentor of the LLM provider, e.g. `OpenAIInstrumentor`
-   ```python
-   from openinference.instrumentation.crewai import CrewAIInstrumentor
-   from openinference.instrumentation.langchain import LangChainInstrumentor
-   from openinference.instrumentation.openai import OpenAIInstrumentor
-   ...
-   CrewAIInstrumentor().instrument(tracer_provider)
-   LangChainInstrumentor().instrument(tracer_provider)
-   OpenAIInstrumentor().instrument(tracer_provider)
-   ```
-9. Update/add environment variables you want to keep and retrieve from the `.env` file - like api keys or configuration parameters
 

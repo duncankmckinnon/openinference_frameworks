@@ -32,16 +32,16 @@ if ! command -v uv &> /dev/null; then
 fi
 
 # Create virtual environment if it doesn't exist
-if [ ! -d ".venv" ]; then
+if [ ! -d ".venv-openai" ]; then
     echo -e "${GREEN}Creating new virtual environment with Python 3.12...${NC}"
-    uv venv --python 3.12 .venv
+    uv venv --python 3.12 .venv-openai
 else
     echo -e "${GREEN}Virtual environment already exists.${NC}"
 fi
 
 # Activate virtual environment
 echo -e "${GREEN}Activating virtual environment...${NC}"
-source .venv/bin/activate
+source .venv-openai/bin/activate
 
 # Install requirements if requirements.txt exists
 if [ -f "requirements.txt" ]; then
@@ -52,5 +52,5 @@ else
 fi
 
 echo -e "${GREEN}Bootstrap completed successfully!${NC}"
-echo -e "${GREEN}To activate the virtual environment, run: source .venv/bin/activate${NC}"
+echo -e "${GREEN}To activate the virtual environment, run: source .venv-openai/bin/activate${NC}"
 echo -e "${GREEN}To install additional packages, use: uv pip install <package>${NC}"
