@@ -32,7 +32,7 @@ if ! command -v uv &> /dev/null; then
 fi
 
 # Create virtual environment if it doesn't exist
-if [ ! -d ".venv" ]; then
+if [ ! -d ".venv-pydantic" ]; then
     echo -e "${GREEN}Creating new virtual environment with Python 3.12...${NC}"
     uv venv --python 3.12 .venv-pydantic
 else
@@ -42,6 +42,14 @@ fi
 # Activate virtual environment
 echo -e "${GREEN}Activating virtual environment...${NC}"
 source .venv-pydantic/bin/activate
+
+# Install requirements if requirements.txt exists
+if [ -f "requirements.txt" ]; then
+    echo -e "${GREEN}Installing requirements with uv...${NC}"
+    uv pip install -r requirements.txt
+else
+    echo -e "${RED}requirements.txt not found. Skipping requirements installation.${NC}"
+fi
 
 echo -e "${GREEN}Bootstrap completed successfully!${NC}"
 echo -e "${GREEN}To activate the virtual environment, run: source .venv-pydantic/bin/activate${NC}"
