@@ -19,10 +19,9 @@ load_dotenv()
 
 def setup_client():
     # For the template, we're using OpenAI, but you can use any LLM provider or agentic framework
-    return PydanticAgent("openai:gpt-4.1", system_prompt="You are a helpful assistant.")
-
-
-tracer = trace.get_tracer(PROJECT_NAME)
+    return PydanticAgent(
+        "openai:gpt-4.1", system_prompt="You are a helpful assistant.", instrument=True
+    )
 
 
 class Agent:
@@ -36,9 +35,6 @@ class Agent:
             "temperature": float(os.getenv("OPENAI_TEMPERATURE", 0.1)),
         }
 
-    @tracer.start_as_current_span(
-        name=AGENT_NAME, attributes={SpanAttributes.OPENINFERENCE_SPAN_KIND: SPAN_TYPE}
-    )
     def analyze_request(self, message: RequestFormat) -> Dict:
         """Analyze the request and determine the appropriate response"""
         conversation_hash = message.conversation_hash

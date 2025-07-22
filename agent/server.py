@@ -3,7 +3,8 @@ from agent.agent import Agent
 from phoenix.otel import register
 from openinference.instrumentation.pydantic_ai import OpenInferenceSpanProcessor
 from openinference.instrumentation.pydantic_ai.utils import is_openinference_span
-from openinference.instrumentation.openai import OpenAIInstrumentor
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 from agent.schema import RequestFormat, ResponseFormat
 from agent.caching import LRUCache
 from agent.constants import PROJECT_NAME
@@ -16,22 +17,18 @@ logger = logging.getLogger(__name__)
 
 logger.info("Initializing FastAPI application...")
 
-# Get Phoenix endpoint from environment
-phoenix_endpoint = os.getenv(
-    "PHOENIX_COLLECTOR_ENDPOINT", "http://localhost:6006/v1/traces"
-)
-logger.info(f"Configuring Phoenix tracing with endpoint: {phoenix_endpoint}")
-
 tracer_provider = register(
     project_name=PROJECT_NAME,
-    endpoint=phoenix_endpoint,
 )
 
-# Add the OpenInference processor to enhance spans
+# Add the OpenInference processor to enhance PydanticAI spans
 openinference_processor = OpenInferenceSpanProcessor(span_filter=is_openinference_span)
 tracer_provider.add_span_processor(openinference_processor)
 
-OpenAIInstrumentor().instrument(tracer_provider=tracer_provider)
+# Add a duplicate exporter to ensure PydanticAI spans are captured
+# Using gRPC endpoint (not HTTP) since we're using the gRPC exporter
+exporter = OTLPSpanExporter(endpoint="http://phoenix:6006/v1/traces")
+tracer_provider.add_span_processor(SimpleSpanProcessor(exporter))
 
 app = FastAPI()
 cache = LRUCache()
