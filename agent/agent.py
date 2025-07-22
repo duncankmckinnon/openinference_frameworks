@@ -1,13 +1,9 @@
 from typing import Dict
 from openinference.instrumentation import using_session
-from openinference.semconv.trace import SpanAttributes
-from opentelemetry import trace
-from opentelemetry.trace import Status, StatusCode
 from agent.schema import RequestFormat, ResponseFormat
 from agent.prompts import Prompts
 from agent.caching import LRUCache
 from dotenv import load_dotenv
-from agent.constants import PROJECT_NAME, AGENT_NAME, SPAN_TYPE
 import os
 import logging
 from pydantic_ai import Agent as PydanticAgent
