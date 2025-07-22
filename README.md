@@ -1,6 +1,6 @@
-# Agentic Template and Demo Server
+# Pydantic AI Agent Template and Demo Server
 
-This template provides infrastructure and demo serving with a web interface for interacting with LLM providers and agentic systems. The template uses OpenAI as the llm, but any agentic framework can be plugged in to serve the incoming requests. The point is to make it easy to run and interact with an agent, gain visibility into the internal process through Phoenix, and produce an interactive demo of the system that is quick and easy to run.
+This template provides infrastructure and demo serving with a web interface for interacting with Pydantic AI agents. The template uses Pydantic AI with OpenAI as the underlying LLM provider. The point is to make it easy to run and interact with a Pydantic AI agent, gain visibility into the internal process through Phoenix, and produce an interactive demo of the system that is quick and easy to run.
 
 ## Prerequisites
 
@@ -26,9 +26,9 @@ To re-run the containers without building:
 
 ## Configuration
 
-The agent is configured to use OpenAI. This is controlled through environment variables in your `.env` file. If you're comfortable editing the provider and docker-compose, you can switch these variables to whatever the agent requires to run (these are for the default provider - OpenAI). The phoenix collector and fastapi endpoint will be fixed when running locally.
+The agent is configured to use Pydantic AI with OpenAI as the underlying LLM provider. This is controlled through environment variables in your `.env` file. The phoenix collector and fastapi endpoint will be fixed when running locally.
 
-### For OpenAI (Default)
+### Environment Variables
 ```env
 OPENAI_API_KEY="your-openai-api-key"
 OPENAI_MODEL="gpt-4"
@@ -80,16 +80,15 @@ The server code is in [agent/server.py](https://github.com/duncankmckinnon/Agent
 The server is where the open-inference tracing is setup for the application. 
 
 ### Agent
-The agent code is in [agent/agent.py](https://github.com/duncankmckinnon/AgentTemplate/tree/main/agent/agent.py). It instantiates the LLM client or agentic framework entrypoint for requests in a setup method, and includes some basic open-telemetry and open-inference boilerplate for capturing information about requests and responses.
-If you change the framework or interface, you'll need to change the `setup_client` function to instantiate your agent definition or LLM client instead.  
-You may also need to change how the request is sent to the agent or LLM in `Agent.analyze_request`, since it currently assumes the OpenAI conventions.
+The agent code is in [agent/agent.py](https://github.com/duncankmckinnon/AgentTemplate/tree/main/agent/agent.py). It instantiates a Pydantic AI agent with built-in instrumentation for requests in a setup method, and includes some basic open-telemetry and open-inference boilerplate for capturing information about requests and responses.
+The current implementation uses Pydantic AI's `Agent` class with OpenAI as the provider. The request is sent to the agent via `client.run_sync()` method, and the response is accessed through `response_completion.output`.
 
 You probably wont really need to change the tracing or caching logic in the agent, unless there is specific context you need to include beyond the history of the chat.
 
 ### Prompts
 The prompts and formatting are defined in [agent/prompts.py](https://github.com/duncankmckinnon/AgentTemplate/tree/main/agent/prompts.py). This class is meant to contain any prompt logic for LLM calls or individual agents. The benefit of the prompt class is that it provides an interface for passing in requests and context between steps and produces the formatting expected by the agentic framework or LLM client. 
 
-You will need to add your own prompts here for a specific application, and may need to adjust the formatting function to match the client or framework semantics.
+You will need to add your own prompts here for a specific application, and may need to adjust the formatting function to match Pydantic AI's expected input format.
 
 ### Schema
 The schema is defined in [agent/schema.py](https://github.com/duncankmckinnon/AgentTemplate/tree/main/agent/schema.py). It provides validations and defaults for the requests and responses to the agent. The default schema is
@@ -116,51 +115,46 @@ The built in caching logic is in [`agent/caching.py`](https://github.com/duncank
 
 If you need to include additional context in the cache, the caching may need to be augmented to store other useful information separately (so it only needs to be retrieved and persisted one time - e.g. customer profile info).
 
-## Changing Frameworks or LLM providers
+## Current Implementation Details
 
-If you do need to switch the framework from (e.g. from `OpenAI` to `CrewAI`), you can follow these steps without any other changes: 
-1. Find the appropriate python package for setting up and running the agent or sending request to the llm
-   * `from openai import OpenAI` -> `from crewai import Agents, Crew`
-2. In the [agent](https://github.com/duncankmckinnon/AgentTemplate/tree/main/agent/agent.py) update `setup_client` to include the instantiation of the framework and return the client that executes on requests.
-3. In the function `agent.analyze_request`, update how the client is being called to match the framework's semantic conventions
-   * current implementation with openai:
-   ```python
-      self.client = setup_client() # openai client
-      ...
-      with using_session(session_id):
-        response = (
-          self.client.chat.completions.create(
-            model=self.model,
-            messages=prompt,
-          )
-          .choices[0]
-          .message
-          .content
-        ).strip()
-   ```
-   * other framework - (crewai):
-   ```python
-      self.client = setup_client(prompts, ...) # crewai agent executable
-      ...
-      with using_session(session_id):
-        response = self.client.kickoff(inputs={"request": request}).raw
-   ``` 
-5. Find the appropriate [open-inference](https://github.com/Arize-ai/openinference) package (e.g. `openinference-instrumentation-crewai`)
-6. Update the requirements to use the python package and open-inference auto-instrumenter you're using
-   * `openai` -> `crewai`
-   * `openinference-instrumentation-openai` -> `openinference-instrumentation-crewai`
-7. Change the imports and the single line auto-instrumentation setup (noted in comments) in the [server](https://github.com/duncankmckinnon/AgentTemplate/tree/main/agent/server.py)
-   * `from openinference.instrumentation.openai import OpenAIInstrumentor` -> `from openinference.instrumentation.crewai import CrewAIInstrumentor`
-   * `OpenAIInstrumentor().instrument(tracer_provider)` -> `CrewAIInstrumentor().instrument(tracer_provider)`
-   * as an aside - agentic framework instrumentation with `CrewAIInstrumentor` works best in Phoenix when instantiated along with `LangChainInstrumentor` and the instrumentor of the LLM provider, e.g. `OpenAIInstrumentor`
-   ```python
-   from openinference.instrumentation.crewai import CrewAIInstrumentor
-   from openinference.instrumentation.langchain import LangChainInstrumentor
-   from openinference.instrumentation.openai import OpenAIInstrumentor
-   ...
-   CrewAIInstrumentor().instrument(tracer_provider)
-   LangChainInstrumentor().instrument(tracer_provider)
-   OpenAIInstrumentor().instrument(tracer_provider)
-   ```
-9. Update/add environment variables you want to keep and retrieve from the `.env` file - like api keys or configuration parameters
+This template is currently configured to use Pydantic AI with the following setup:
+
+### Agent Implementation
+- Uses `pydantic_ai.Agent` class with built-in instrumentation enabled (`instrument=True`)
+- Calls the agent via `client.run_sync(prompt)` method
+- Accesses response through `response_completion.output`
+- Configured with OpenAI as the underlying LLM provider using model specification `"openai:gpt-4.1"`
+
+### Instrumentation
+The server includes specialized Pydantic AI instrumentation:
+```python
+from openinference.instrumentation.pydantic_ai import OpenInferenceSpanProcessor
+from openinference.instrumentation.pydantic_ai.utils import is_openinference_span
+
+# Add the OpenInference processor to enhance PydanticAI spans
+openinference_processor = OpenInferenceSpanProcessor(span_filter=is_openinference_span)
+tracer_provider.add_span_processor(openinference_processor)
+
+# Add a duplicate exporter to ensure PydanticAI spans are captured
+exporter = OTLPSpanExporter(endpoint="http://phoenix:6006/v1/traces")
+tracer_provider.add_span_processor(SimpleSpanProcessor(exporter))
+```
+
+### Dependencies
+Key packages in requirements.txt:
+- `pydantic-ai>=0.1.0`
+- `openinference-instrumentation-pydantic-ai>=0.0.1`
+- `openinference-instrumentation-openai>=0.0.1`
+- `apscheduler>=3.10.0`
+
+## Changing to Other Frameworks
+
+If you need to switch to a different agentic framework, you can follow these general steps:
+1. Update the python package imports in `agent.py`
+2. Modify `setup_client()` to instantiate your preferred framework
+3. Update `analyze_request()` to call the client using the framework's conventions
+4. Find and install the appropriate OpenInference instrumentor package
+5. Update the imports and instrumentation setup in `server.py`
+6. Update requirements.txt with the new dependencies
+7. Modify environment variables as needed for the new framework
 
