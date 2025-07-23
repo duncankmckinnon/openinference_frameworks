@@ -1,20 +1,8 @@
-from typing import Dict, List
+from langchain_core.prompts import ChatPromptTemplate
+
 
 class Prompts:
-    base_prompt = """
-            # Role
-            You are a helpful assistant that can answer questions and help with tasks.
-        """
-
-    def format_prompt(self, request: str, context: str = None) -> List[Dict]:
-        return [
-            {
-                "role": "system",
-                "content": f"{self.base_prompt}"
-            },
-            {
-                "role": "user",
-                "content": f"Customer message: {request}" + (f"\n\nContext: {context}" if context else "")
-            }
-        ]
-
+    template = ChatPromptTemplate.from_messages([
+        ("system", "You are a helpful assistant that can answer questions and help with tasks."),
+        ("human", "Customer message: {request}\n\nContext: {context}")
+    ])
