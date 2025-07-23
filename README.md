@@ -1,159 +1,172 @@
-# Agentic Framework Comparison Repository
+# DSPy Agent Template and Demo Server
 
-This repository provides a comprehensive comparison of different agentic AI orchestration frameworks through working implementations. Each branch contains the same core application built with a different framework, allowing you to explore and compare approaches to building AI agents.
+This template provides infrastructure and demo serving with a web interface for interacting with DSPy agents. The template uses DSPy with OpenAI as the underlying LLM provider. The point is to make it easy to run and interact with a DSPy agent, gain visibility into the internal process through Phoenix, and produce an interactive demo of the system that is quick and easy to run.
 
-## 📋 Table of Contents - Framework Implementations
+## Prerequisites
 
-| Framework | Branch | Description | Key Features |
-|-----------|--------|-------------|--------------|
-| **OpenAI Direct** | [📁 `openai`](https://github.com/duncankmckinnon/openinference_frameworks/tree/openai) | Direct OpenAI API integration | Simple, minimal setup with raw OpenAI calls |
-| **CrewAI** | [📁 `crewai`](https://github.com/duncankmckinnon/openinference_frameworks/tree/crewai) | Multi-agent collaboration framework | Agent crews, role-based workflows, task delegation |
-| **LangGraph** | [📁 `langgraph`](https://github.com/duncankmckinnon/openinference_frameworks/tree/langgraph) | Graph-based agent workflows | State management, conditional routing, complex workflows |
-| **Pydantic AI** | [📁 `pydantic`](https://github.com/duncankmckinnon/openinference_frameworks/tree/pydantic) | Type-safe AI agent framework | Built-in validation, structured outputs, type safety |
+- Docker, python3, and pyenv installed
+- API key credentials (OpenAI or whichever provider/framework you prefer)
+- Environment variables configured (see Configuration section)
 
-## 🚀 What This Repository Demonstrates
+## Quick Start
 
-Each implementation provides the same core functionality:
-- **Interactive chat interface** with a web-based demo
-- **Phoenix observability** for tracing and monitoring agent behavior
-- **Docker containerization** for consistent deployment
-- **REST API** for programmatic agent interaction
-- **Conversation memory** and context management
+1. Create your project repo using the template and clone in locally
+2. Set your environment variables in the directory in a new `.env` file
+3. Create the local `.venv-dspy` for the repository by running ```./bin/bootstrap.sh```
+   - follow any instructions to install python3 and python3-venv if necessary
+   - when the script completes, activate the environment with `source .venv-dspy/bin/activate` (on Mac, pc is slightly different)
+   - Re-run the script to install any new packages added to requirements
+4. Make sure [docker](https://docs.docker.com/get-started/get-docker/) is running on your laptop in the background.
+5. Run the demo server from the project root with ```./bin/run_agent.sh --build```
 
-## 🏗️ Common Infrastructure
-
-All implementations share the same foundational components:
-
-### Core Features
-- **FastAPI server** for HTTP endpoints
-- **Flask demo interface** for interactive testing
-- **Phoenix integration** for comprehensive observability and tracing
-- **Docker containerization** with Python 3.12 and uv package management
-- **LRU caching** for conversation state management
-- **Pydantic schemas** for request/response validation
-
-### Observability & Monitoring
-- **Phoenix dashboard** at `localhost:6006` for trace visualization
-- **OpenInference instrumentation** specific to each framework
-- **Request/response tracing** with conversation context
-- **Performance metrics** and error tracking
-
-### Development Tools
-- **Automatic environment setup** with `./bin/bootstrap.sh`
-- **Hot reload** for development iterations
-- **Comprehensive logging** for debugging
-- **Standardized project structure** across all implementations
-
-## 🔧 Quick Start (Any Branch)
-
-1. **Choose your framework** - Switch to the branch you want to explore
-2. **Set up environment** - Run `./bin/bootstrap.sh` (installs Python 3.12 + uv automatically)
-3. **Configure API keys** - Create `.env` file with your OpenAI API key
-4. **Launch the stack** - Run `./bin/run_agent.sh --build`
-5. **Explore the demo** - Visit `localhost:8080` for the chat interface
-6. **Monitor with Phoenix** - Visit `localhost:6006` for observability
-
-## 📊 Framework Comparison
-
-### Complexity vs. Capability
-
-| Framework | Setup Complexity | Learning Curve | Capability | Best For |
-|-----------|------------------|----------------|------------|----------|
-| **OpenAI Direct** | Low | Low | Basic | Simple chatbots, prototyping |
-| **CrewAI** | Medium | Medium | High | Multi-agent workflows, team collaboration |
-| **LangGraph** | High | High | Very High | Complex state machines, conditional logic |
-| **Pydantic AI** | Low | Low | Medium | Type-safe applications, structured data |
-
-### Key Differences
-
-**OpenAI Direct**
-- Minimal abstraction over OpenAI API
-- Direct control over all parameters
-- Simplest to understand and debug
-
-**CrewAI**
-- Multi-agent orchestration
-- Role-based agent definitions
-- Built-in task delegation and collaboration
-
-**LangGraph**
-- Graph-based workflow definition
-- Advanced state management
-- Conditional routing and complex logic flows
-
-**Pydantic AI**
-- Type-safe agent interactions
-- Built-in validation and structured outputs
-- Clean, pythonic API design
-
-## 🛠️ Switching Between Implementations
-
-Each branch is fully self-contained. To explore a different framework:
-
+To re-run the containers without building:
 ```bash
-# Switch to desired framework branch
-git checkout <framework-branch>
-
-# Set up the environment (if not already done)
-./bin/bootstrap.sh
-
-# Launch the application
-./bin/run_agent.sh --build
+./bin/run_agent.sh
 ```
 
-## 📁 Project Structure
+## Configuration
 
-All implementations follow this consistent structure:
+The agent is configured to use DSPy with OpenAI as the underlying LLM provider. This is controlled through environment variables in your `.env` file. The phoenix collector and fastapi endpoint will be fixed when running locally.
 
-```
-├── agent/
-│   ├── agent.py          # Core agent implementation (framework-specific)
-│   ├── server.py         # FastAPI server with observability
-│   ├── prompts.py        # Prompt templates and formatting
-│   ├── schema.py         # Pydantic models for validation
-│   ├── caching.py        # Conversation state management
-│   └── demo_code/        # Flask demo interface
-├── bin/
-│   ├── bootstrap.sh      # Environment setup script
-│   └── run_agent.sh      # Docker launch script
-├── Dockerfile            # Python 3.12 + uv container
-├── docker-compose.yml    # Multi-service orchestration
-├── requirements.txt      # Framework-specific dependencies
-└── README.md            # Framework-specific documentation
+### Environment Variables
+```env
+OPENAI_API_KEY="your-openai-api-key"
+OPENAI_MODEL="gpt-4o-mini"
+OPENAI_TEMPERATURE=0.2
+FASTAPI_URL="http://fastapi:8000"
+PHOENIX_COLLECTOR_ENDPOINT="http://phoenix:6006/v1/traces"
 ```
 
-## 🔍 Observability Features
+## Demo Interface
 
-All implementations include comprehensive observability through Phoenix:
+Once running, the demo will be available at:
+- Demo Interface: [localhost:8080](http://127.0.0.1:8080)
+- Phoenix Dashboard: [localhost:6006](http://127.0.0.1:6006)
 
-- **Trace Visualization** - See complete request flows
-- **Performance Monitoring** - Track response times and errors
-- **Conversation Context** - View full conversation history
-- **Framework-Specific Metrics** - Understand framework internals
-- **Real-time Dashboards** - Monitor live agent interactions
+The interface allows you to:
+- Send messages to the bot
+- View the bot's responses
+- Review the requests being made and how they are processed step-by-step in Phoenix
 
-## 🎯 Learning Path Recommendations
+## Troubleshooting
 
-1. **Start with OpenAI Direct** - Understand the basics without framework abstractions
-2. **Explore Pydantic AI** - Learn type-safe agent development
-3. **Try CrewAI** - Experience multi-agent orchestration
-4. **Master LangGraph** - Build complex, stateful agent workflows
+### Common Issues
 
-## 🤝 Contributing
+1. **Phoenix Connection Error**
+   - Ensure Phoenix container is running
+   - Check PHOENIX_COLLECTOR_ENDPOINT in .env
 
-Each branch maintains the same application interface while showcasing different framework approaches. When contributing:
+2. **API Key Issues**
+   - Verify OPENAI_API_KEY and check OPENAI_MODEL is valid
 
-- Keep the core API consistent across implementations
-- Update framework-specific documentation in each branch
-- Ensure observability features work across all frameworks
-- Maintain the same development experience (bootstrap, run scripts, etc.)
+3. **Container Build Issues**
+   - Run with --build flag: `./bin/run_agent.sh --build`
+   - Check Docker logs: `docker-compose logs`
+        - `docker-compose logs agent` for agent container logs
+        - `docker-compose logs phoenix` for phoenix container logs
 
-## 📖 Further Reading
+## Development
 
-- **Phoenix Observability**: [Phoenix Documentation](https://docs.arize.com/phoenix)
-- **OpenInference Standards**: [OpenInference Specification](https://github.com/Arize-ai/openinference)
-- **Framework Documentation**: See individual branch READMEs for framework-specific guides
+### Demo
+The demo logic is located in [agent/demo_code/demo_server.py](https://github.com/duncankmckinnon/AgentTemplate/tree/dspy/agent/demo_code). This contains all the logic for interactive chat demos.
+Key components:
 
----
+- `demo_server.py`: Main Flask application (calls the REST API to avoid duplicate logic)
+- `templates/index.html`: Web interface for chat
+- `static/`: CSS and JavaScript files for running the chat interface
 
-Choose a branch above to start exploring different approaches to building AI agents! Each implementation provides the same functionality with different architectural patterns and capabilities.
+### Server
+The server code is in [agent/server.py](https://github.com/duncankmckinnon/AgentTemplate/tree/dspy/agent/server.py). This contains the python fastAPI interface that processes chat requests.
+The server is where the open-inference tracing is setup for the application. 
+
+### Agent
+The agent code is in [agent/agent.py](https://github.com/duncankmckinnon/AgentTemplate/tree/dspy/agent/agent.py). It instantiates a DSPy agent using the ChainOfThought signature for requests in a setup method, and includes some basic open-telemetry and open-inference boilerplate for capturing information about requests and responses.
+
+The current implementation uses DSPy's `LM` class for the language model and `ChainOfThought` signature for reasoning. The request is sent to the agent via the callable signature with context and question parameters, and the response is accessed through `response.response`.
+
+### Prompts
+The prompts and formatting are defined in [agent/prompts.py](https://github.com/duncankmckinnon/AgentTemplate/tree/dspy/agent/prompts.py). This class is meant to contain any prompt logic for LLM calls or individual agents. The benefit of the prompt class is that it provides an interface for passing in requests and context between steps and produces the formatting expected by the agentic framework or LLM client.
+
+You will need to add your own prompts here for a specific application. The current implementation formats prompts as a dictionary with `context` and `question` fields that are passed to the DSPy ChainOfThought signature.
+
+### Schema
+The schema is defined in [agent/schema.py](https://github.com/duncankmckinnon/AgentTemplate/tree/dspy/agent/schema.py). It provides validations and defaults for the requests and responses to the agent. The default schema is
+
+```python
+from pydantic import BaseModel, Field
+from typing import Optional
+from datetime import datetime
+
+class RequestFormat(BaseModel):
+    conversation_hash: str = Field(description="The conversation hash associated with the request")
+    request_timestamp: Optional[str] = Field(default=datetime.now().isoformat(), description="The timestamp of the request")
+    customer_message: str = Field(description="The message of the request")
+
+
+class ResponseFormat(BaseModel):
+    response: str = Field(description="The response to the request")
+```
+
+You may need to adjust this to handle other specific information the system needs to produce in the response or any intermediate validations for responses passed between LLMs.
+
+### Caching
+The built in caching logic is in [`agent/caching.py`](https://github.com/duncankmckinnon/AgentTemplate/tree/dspy/agent/caching.py). It implements a basic LRU cache to store requests and responses during the conversation and surface them on subsequent interactions within the session.
+
+If you need to include additional context in the cache, the caching may need to be augmented to store other useful information separately (so it only needs to be retrieved and persisted one time - e.g. customer profile info).
+
+## Current Implementation Details
+
+This template is currently configured to use DSPy with the following setup:
+
+### Agent Implementation
+- Uses `dspy.LM` class for language model configuration with OpenAI
+- Implements a `dspy.ChainOfThought` signature with "question, context -> response" format
+- Configured via `dspy.configure(lm=model)` to set the language model
+- Calls the agent via `client(**prompt)` where prompt contains context and question
+- Accesses response through `response.response`
+
+### DSPy Signature
+```python
+qa = dspy.ChainOfThought("question, context -> response")
+```
+
+### Instrumentation
+The server includes DSPy instrumentation for comprehensive tracing:
+```python
+from openinference.instrumentation.dspy import DSPyInstrumentor
+
+DSPyInstrumentor().instrument(tracer_provider=trace_provider)
+```
+
+### Dependencies
+Key packages in requirements.txt:
+- `dspy>=0.0.1`
+- `openinference-instrumentation-dspy>=0.0.1`
+- `openinference-instrumentation>=0.0.1`
+- `opentelemetry-sdk>=1.19.0`
+
+## Changing to Other Frameworks
+
+If you need to switch to a different agentic framework, you can follow these general steps:
+1. Update the python package imports in `agent.py`
+2. Modify `setup_client()` to instantiate your preferred framework
+3. Update `analyze_request()` to call the client using the framework's conventions
+4. Find and install the appropriate OpenInference instrumentor package
+5. Update the imports and instrumentation setup in `server.py`
+6. Update requirements.txt with the new dependencies
+7. Modify environment variables as needed for the new framework
+
+## DSPy Specific Features
+
+DSPy provides a declarative approach to building language model programs:
+- **Signatures**: Define input-output behaviors like "question, context -> response"
+- **Modules**: Pre-built components like ChainOfThought for reasoning tasks
+- **Optimizers**: Can automatically optimize prompts for better performance
+- **Composability**: Easy to chain multiple DSPy modules together
+
+For more advanced use cases, you can:
+- Create custom signatures for specific tasks
+- Use DSPy's built-in modules like ReAct, ProgramOfThought, etc.
+- Implement optimizers to improve prompt performance
+- Add assertions and constraints to ensure output quality
+
