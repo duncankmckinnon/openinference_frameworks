@@ -6,10 +6,10 @@ This repository provides a comprehensive comparison of different agentic AI orch
 
 | Framework | Branch | Description | Key Features |
 |-----------|--------|-------------|--------------|
-| **OpenAI Direct** | [📁 `openai`](https://github.com/duncanmckinnon/openinference_test_repo/tree/openai) | Direct OpenAI API integration | Simple, minimal setup with raw OpenAI calls |
-| **CrewAI** | [📁 `crewai`](https://github.com/duncanmckinnon/openinference_test_repo/tree/crewai) | Multi-agent collaboration framework | Agent crews, role-based workflows, task delegation |
-| **LangGraph** | [📁 `langgraph`](https://github.com/duncanmckinnon/openinference_test_repo/tree/langgraph) | Graph-based agent workflows | State management, conditional routing, complex workflows |
-| **Pydantic AI** | [📁 `pydantic`](https://github.com/duncanmckinnon/openinference_test_repo/tree/pydantic) | Type-safe AI agent framework | Built-in validation, structured outputs, type safety |
+| **OpenAI Direct** | [📁 `openai`](https://github.com/duncanmckinnon/openinference_frameworks/tree/openai) | Direct OpenAI API integration | Simple, minimal setup with raw OpenAI calls |
+| **CrewAI** | [📁 `crewai`](https://github.com/duncanmckinnon/openinference_frameworks/tree/crewai) | Multi-agent collaboration framework | Agent crews, role-based workflows, task delegation |
+| **LangGraph** | [📁 `langgraph`](https://github.com/duncanmckinnon/openinference_frameworks/tree/langgraph) | Graph-based agent workflows | State management, conditional routing, complex workflows |
+| **Pydantic AI** | [📁 `pydantic`](https://github.com/duncanmckinnon/openinference_frameworks/tree/pydantic) | Type-safe AI agent framework | Built-in validation, structured outputs, type safety |
 
 ## 🚀 What This Repository Demonstrates
 
