@@ -21,8 +21,8 @@ fi
 if ! command -v uv &> /dev/null; then
     echo -e "${YELLOW}uv is not installed. Installing uv...${NC}"
     curl -LsSf https://astral.sh/uv/install.sh | sh
-    source ~/.cargo/env || true
-    export PATH="$HOME/.cargo/bin:$PATH"
+    source ~/.local/bin/uv || true
+    export PATH="$HOME/.local/bin:$PATH"
     
     # Check again if uv is available
     if ! command -v uv &> /dev/null; then

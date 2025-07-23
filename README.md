@@ -10,6 +10,7 @@ This repository provides a comprehensive comparison of different agentic AI orch
 | **CrewAI** | [📁 `crewai`](https://github.com/duncankmckinnon/openinference_frameworks/tree/crewai) | Multi-agent collaboration framework | Agent crews, role-based workflows, task delegation |
 | **LangGraph** | [📁 `langgraph`](https://github.com/duncankmckinnon/openinference_frameworks/tree/langgraph) | Graph-based agent workflows | State management, conditional routing, complex workflows |
 | **Pydantic AI** | [📁 `pydantic`](https://github.com/duncankmckinnon/openinference_frameworks/tree/pydantic) | Type-safe AI agent framework | Built-in validation, structured outputs, type safety |
+| **DSPy** | [📁 `dspy`](https://github.com/duncankmckinnon/openinference_frameworks/tree/dspy) | Declarative language model programming | Signatures, modules, prompt optimization, composability |
 
 ## 🚀 What This Repository Demonstrates
 
@@ -63,6 +64,7 @@ All implementations share the same foundational components:
 | **CrewAI** | Medium | Medium | High | Multi-agent workflows, team collaboration |
 | **LangGraph** | High | High | Very High | Complex state machines, conditional logic |
 | **Pydantic AI** | Low | Low | Medium | Type-safe applications, structured data |
+| **DSPy** | Medium | Medium | High | Declarative prompting, optimization, research |
 
 ### Key Differences
 
@@ -85,6 +87,12 @@ All implementations share the same foundational components:
 - Type-safe agent interactions
 - Built-in validation and structured outputs
 - Clean, pythonic API design
+
+**DSPy**
+- Declarative approach to LM programming
+- Automatic prompt optimization
+- Modular components (ChainOfThought, ReAct, etc.)
+- Research-focused with composability
 
 ## 🛠️ Switching Between Implementations
 
@@ -136,8 +144,9 @@ All implementations include comprehensive observability through Phoenix:
 
 1. **Start with OpenAI Direct** - Understand the basics without framework abstractions
 2. **Explore Pydantic AI** - Learn type-safe agent development
-3. **Try CrewAI** - Experience multi-agent orchestration
-4. **Master LangGraph** - Build complex, stateful agent workflows
+3. **Try DSPy** - Experiment with declarative prompting and optimization
+4. **Experience CrewAI** - Build multi-agent orchestration systems
+5. **Master LangGraph** - Create complex, stateful agent workflows
 
 ## 🤝 Contributing
 

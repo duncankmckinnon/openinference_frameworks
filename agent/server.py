@@ -24,20 +24,23 @@ app = FastAPI()
 cache = LRUCache()
 agent = Agent(cache=cache)
 
+
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
+
 
 @app.get("/clear_cache")
 def clear_cache():
     cache.clear()
     return {"message": "Cache cleared"}
 
+
 @app.post("/agent", response_model=ResponseFormat)
 def process_request(request: RequestFormat):
     try:
         response = agent.handle_request(request)
-        
+
         return response
     except Exception as e:
         logger.error(f"Error processing request: {str(e)}")

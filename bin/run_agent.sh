@@ -23,7 +23,6 @@ wait_and_open &
 
 # Initialize flags
 BUILD=false
-DEV=false
 
 # Parse arguments
 for arg in "$@"; do
@@ -31,17 +30,8 @@ for arg in "$@"; do
         --build)
             BUILD=true
             ;;
-        --dev)
-            DEV=true
-            ;;
     esac
 done
-
-# Set environment if dev mode
-if [[ "$DEV" == "true" ]]; then
-    echo "Running in development mode..."
-    export USE_AZURE_OPENAI=false
-fi
 
 # Start containers
 if [[ "$BUILD" == "true" ]]; then
