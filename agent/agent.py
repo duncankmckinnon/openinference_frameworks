@@ -13,10 +13,9 @@ load_dotenv()
 
 
 def setup_client():
-    # For the template, we're using OpenAI, but you can use any LLM provider or agentic framework
-    from openai import OpenAI
+    from litellm import completion
 
-    return OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    return completion
 
 
 class Agent:
@@ -43,15 +42,11 @@ class Agent:
 
         try:
             with using_session(session_id):
-                response_completion = (
-                    self.client.chat.completions.create(
-                        **self.request_params,
-                        messages=prompt,
-                    )
-                    .choices[0]
-                    .message.content
+                response_completion = self.client(
+                    **self.request_params,
+                    messages=prompt,
                 )
-            response = response_completion.strip()
+            response = response_completion.choices[0].message.content
             self.cache.add_interaction(conversation_hash, request, response)
             return {"response": response}
         except Exception as e:
