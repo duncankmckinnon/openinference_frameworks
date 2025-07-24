@@ -10,6 +10,7 @@ This repository provides a comprehensive comparison of different agentic AI orch
 | **CrewAI** | [📁&nbsp;`crewai`](https://github.com/duncankmckinnon/openinference_frameworks/tree/crewai) | Multi-agent collaboration framework | Agent crews, role-based workflows, task delegation |
 | **LangGraph** | [📁&nbsp;`langgraph`](https://github.com/duncankmckinnon/openinference_frameworks/tree/langgraph) | Graph-based agent workflows | State management, conditional routing, complex workflows |
 | **Pydantic&nbsp;AI** | [📁&nbsp;`pydantic`](https://github.com/duncankmckinnon/openinference_frameworks/tree/pydantic) | Type-safe AI agent framework | Built-in validation, structured outputs, type safety |
+| **LiteLLM** | [📁&nbsp;`litellm`](https://github.com/duncankmckinnon/openinference_frameworks/tree/litellm) | Multi-provider LLM gateway | Unified API for 100+ LLM providers, easy provider switching |
 | **DSPy** | [📁&nbsp;`dspy`](https://github.com/duncankmckinnon/openinference_frameworks/tree/dspy) | Declarative language model programming | Signatures, modules, prompt optimization, composability |
 
 ## 🚀 What This Repository Demonstrates
@@ -64,6 +65,7 @@ All implementations share the same foundational components:
 | **CrewAI** | Medium | Medium | High | Multi-agent workflows, team collaboration |
 | **LangGraph** | High | High | Very High | Complex state machines, conditional logic |
 | **Pydantic AI** | Low | Low | Medium | Type-safe applications, structured data |
+| **LiteLLM** | Low | Low | Medium | Multi-provider applications, vendor flexibility |
 | **DSPy** | Medium | Medium | High | Declarative prompting, optimization, research |
 
 ### Key Differences
@@ -87,6 +89,11 @@ All implementations share the same foundational components:
 - Type-safe agent interactions
 - Built-in validation and structured outputs
 - Clean, pythonic API design
+
+**LiteLLM**
+- Unified API for 100+ LLM providers
+- Easy provider switching without code changes
+- Built-in cost tracking and fallback mechanisms
 
 **DSPy**
 - Declarative approach to LM programming
@@ -144,9 +151,10 @@ All implementations include comprehensive observability through Phoenix:
 
 1. **Start with OpenAI Direct** - Understand the basics without framework abstractions
 2. **Explore Pydantic AI** - Learn type-safe agent development
-3. **Try DSPy** - Experiment with declarative prompting and optimization
-4. **Experience CrewAI** - Build multi-agent orchestration systems
-5. **Master LangGraph** - Create complex, stateful agent workflows
+3. **Try LiteLLM** - Experience multi-provider flexibility and cost optimization
+4. **Experiment with DSPy** - Try declarative prompting and optimization
+5. **Experience CrewAI** - Build multi-agent orchestration systems
+6. **Master LangGraph** - Create complex, stateful agent workflows
 
 ## 🤝 Contributing
 
