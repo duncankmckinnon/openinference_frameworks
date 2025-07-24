@@ -102,8 +102,8 @@ Each branch is fully self-contained. To explore a different framework:
 # Switch to desired framework branch
 git checkout <framework-branch>
 
-# Set up the environment (if not already done)
-./bin/bootstrap.sh
+# Set up and activate the environment (if you want to make changes)
+./bin/bootstrap.sh && source .venv-{framework}/bin/activate.sh
 
 # Launch the application
 ./bin/run_agent.sh --build
