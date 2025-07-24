@@ -4,13 +4,13 @@ This repository provides a comprehensive comparison of different agentic AI orch
 
 ## 📋 Table of Contents - Framework Implementations
 
-| Framework | Branch | Description | Key Features |
-|-----------|--------|-------------|--------------|
-| **OpenAI Direct** | [📁 `openai`](https://github.com/duncankmckinnon/openinference_frameworks/tree/openai) | Direct OpenAI API integration | Simple, minimal setup with raw OpenAI calls |
-| **CrewAI** | [📁 `crewai`](https://github.com/duncankmckinnon/openinference_frameworks/tree/crewai) | Multi-agent collaboration framework | Agent crews, role-based workflows, task delegation |
-| **LangGraph** | [📁 `langgraph`](https://github.com/duncankmckinnon/openinference_frameworks/tree/langgraph) | Graph-based agent workflows | State management, conditional routing, complex workflows |
-| **Pydantic AI** | [📁 `pydantic`](https://github.com/duncankmckinnon/openinference_frameworks/tree/pydantic) | Type-safe AI agent framework | Built-in validation, structured outputs, type safety |
-| **DSPy** | [📁 `dspy`](https://github.com/duncankmckinnon/openinference_frameworks/tree/dspy) | Declarative language model programming | Signatures, modules, prompt optimization, composability |
+| Framework&nbsp;   | Branch&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Description | Key Features |
+|-------------|--------------|-------------|--------------|
+| **OpenAI&nbsp;Direct** | [📁&nbsp;`openai`](https://github.com/duncankmckinnon/openinference_frameworks/tree/openai) | Direct OpenAI API integration | Simple, minimal setup with raw OpenAI calls |
+| **CrewAI** | [📁&nbsp;`crewai`](https://github.com/duncankmckinnon/openinference_frameworks/tree/crewai) | Multi-agent collaboration framework | Agent crews, role-based workflows, task delegation |
+| **LangGraph** | [📁&nbsp;`langgraph`](https://github.com/duncankmckinnon/openinference_frameworks/tree/langgraph) | Graph-based agent workflows | State management, conditional routing, complex workflows |
+| **Pydantic&nbsp;AI** | [📁&nbsp;`pydantic`](https://github.com/duncankmckinnon/openinference_frameworks/tree/pydantic) | Type-safe AI agent framework | Built-in validation, structured outputs, type safety |
+| **DSPy** | [📁&nbsp;`dspy`](https://github.com/duncankmckinnon/openinference_frameworks/tree/dspy) | Declarative language model programming | Signatures, modules, prompt optimization, composability |
 
 ## 🚀 What This Repository Demonstrates
 
