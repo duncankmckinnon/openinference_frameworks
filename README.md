@@ -12,6 +12,7 @@ This repository provides a comprehensive comparison of different agentic AI orch
 | **Pydantic&nbsp;AI** | [📁&nbsp;`pydantic`](https://github.com/duncankmckinnon/openinference_frameworks/tree/pydantic) | Type-safe AI agent framework | Built-in validation, structured outputs, type safety |
 | **LiteLLM** | [📁&nbsp;`litellm`](https://github.com/duncankmckinnon/openinference_frameworks/tree/litellm) | Multi-provider LLM gateway | Unified API for 100+ LLM providers, easy provider switching |
 | **DSPy** | [📁&nbsp;`dspy`](https://github.com/duncankmckinnon/openinference_frameworks/tree/dspy) | Declarative language model programming | Signatures, modules, prompt optimization, composability |
+| **Groq** | [📁&nbsp;`groq`](https://github.com/duncankmckinnon/openinference_frameworks/tree/groq) | High-performance inference API | Lightning-fast responses, open-source models, OpenAI compatibility |
 
 ## 🚀 What This Repository Demonstrates
 
@@ -67,6 +68,7 @@ All implementations share the same foundational components:
 | **Pydantic AI** | Low | Low | Medium | Type-safe applications, structured data |
 | **LiteLLM** | Low | Low | Medium | Multi-provider applications, vendor flexibility |
 | **DSPy** | Medium | Medium | High | Declarative prompting, optimization, research |
+| **Groq** | Low | Low | Medium | High-speed inference, open models, performance-critical apps |
 
 ### Key Differences
 
@@ -100,6 +102,12 @@ All implementations share the same foundational components:
 - Automatic prompt optimization
 - Modular components (ChainOfThought, ReAct, etc.)
 - Research-focused with composability
+
+**Groq**
+- Ultra-fast inference with custom silicon
+- OpenAI-compatible API for easy integration
+- Access to open-source models (Llama, Mixtral)
+- Cost-effective high-performance inference
 
 ## 🛠️ Switching Between Implementations
 
@@ -151,10 +159,11 @@ All implementations include comprehensive observability through Phoenix:
 
 1. **Start with OpenAI Direct** - Understand the basics without framework abstractions
 2. **Explore Pydantic AI** - Learn type-safe agent development
-3. **Try LiteLLM** - Experience multi-provider flexibility and cost optimization
-4. **Experiment with DSPy** - Try declarative prompting and optimization
-5. **Experience CrewAI** - Build multi-agent orchestration systems
-6. **Master LangGraph** - Create complex, stateful agent workflows
+3. **Try Groq** - Experience ultra-fast inference with open-source models
+4. **Try LiteLLM** - Experience multi-provider flexibility and cost optimization
+5. **Experiment with DSPy** - Try declarative prompting and optimization
+6. **Experience CrewAI** - Build multi-agent orchestration systems
+7. **Master LangGraph** - Create complex, stateful agent workflows
 
 ## 🤝 Contributing
 
