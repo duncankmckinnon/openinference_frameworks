@@ -12,8 +12,8 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - GROQ_OPENAI_MODEL=${GROQ_OPENAI_MODEL:-openai/gpt-oss-120b}
       - OPENAI_TEMPERATURE=${OPENAI_TEMPERATURE:-0.2}
       - PHOENIX_COLLECTOR_ENDPOINT=http://phoenix:4317
       - PYTHONUNBUFFERED=1

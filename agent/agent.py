@@ -14,9 +14,9 @@ load_dotenv()
 
 def setup_client():
     # For the template, we're using OpenAI, but you can use any LLM provider or agentic framework
-    from openai import OpenAI
+    from groq import Groq
 
-    return OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    return Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 
 class Agent:
@@ -26,8 +26,8 @@ class Agent:
         self.prompts = Prompts()
         self.cache = cache
         self.request_params = {
-            "model": os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-            "temperature": float(os.getenv("OPENAI_TEMPERATURE", 0.1)),
+            "model": os.getenv("GROQ_OPENAI_MODEL", "openai/gpt-oss-120b"),
+            "temperature": float(os.getenv("GROQ_TEMPERATURE", 0.1)),
         }
 
     def analyze_request(self, message: RequestFormat) -> Dict:

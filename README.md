@@ -1,176 +1,185 @@
-# Agentic Framework Comparison Repository
+# Groq Agent Template and Demo Server
 
-This repository provides a comprehensive comparison of different agentic AI orchestration frameworks through working implementations. Each branch contains the same core application built with a different framework, allowing you to explore and compare approaches to building AI agents.
+This template provides infrastructure and demo serving with a web interface for interacting with Groq agents. The template uses Groq's high-performance inference API with various open-source models. The point is to make it easy to run and interact with a Groq agent, gain visibility into the internal process through Phoenix, and produce an interactive demo of the system that is quick and easy to run.
 
-## 📋 Table of Contents - Framework Implementations
+## Prerequisites
 
-| Framework&nbsp;   | Branch&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Description | Key Features |
-|-------------|--------------|-------------|--------------|
-| **OpenAI&nbsp;Direct** | [📁&nbsp;`openai`](https://github.com/duncankmckinnon/openinference_frameworks/tree/openai) | Direct OpenAI API integration | Simple, minimal setup with raw OpenAI calls |
-| **CrewAI** | [📁&nbsp;`crewai`](https://github.com/duncankmckinnon/openinference_frameworks/tree/crewai) | Multi-agent collaboration framework | Agent crews, role-based workflows, task delegation |
-| **LangGraph** | [📁&nbsp;`langgraph`](https://github.com/duncankmckinnon/openinference_frameworks/tree/langgraph) | Graph-based agent workflows | State management, conditional routing, complex workflows |
-| **Pydantic&nbsp;AI** | [📁&nbsp;`pydantic`](https://github.com/duncankmckinnon/openinference_frameworks/tree/pydantic) | Type-safe AI agent framework | Built-in validation, structured outputs, type safety |
-| **LiteLLM** | [📁&nbsp;`litellm`](https://github.com/duncankmckinnon/openinference_frameworks/tree/litellm) | Multi-provider LLM gateway | Unified API for 100+ LLM providers, easy provider switching |
-| **DSPy** | [📁&nbsp;`dspy`](https://github.com/duncankmckinnon/openinference_frameworks/tree/dspy) | Declarative language model programming | Signatures, modules, prompt optimization, composability |
+- Docker, python3, and pyenv installed
+- API key credentials (Groq API key)
+- Environment variables configured (see Configuration section)
 
-## 🚀 What This Repository Demonstrates
+## Quick Start
 
-Each implementation provides the same core functionality:
-- **Interactive chat interface** with a web-based demo
-- **Phoenix observability** for tracing and monitoring agent behavior
-- **Docker containerization** for consistent deployment
-- **REST API** for programmatic agent interaction
-- **Conversation memory** and context management
+1. Create your project repo using the template and clone in locally
+2. Set your environment variables in the directory in a new `.env` file
+3. Create the local `.venv-groq` for the repository by running ```./bin/bootstrap.sh```
+   - follow any instructions to install python3 and python3-venv if necessary
+   - when the script completes, activate the environment with `source .venv-groq/bin/activate` (on Mac, pc is slightly different)
+   - Re-run the script to install any new packages added to requirements
+4. Make sure [docker](https://docs.docker.com/get-started/get-docker/) is running on your laptop in the background.
+5. Run the demo server from the project root with ```./bin/run_agent.sh --build```
 
-## 🏗️ Common Infrastructure
-
-All implementations share the same foundational components:
-
-### Core Features
-- **FastAPI server** for HTTP endpoints
-- **Flask demo interface** for interactive testing
-- **Phoenix integration** for comprehensive observability and tracing
-- **Docker containerization** with Python 3.12 and uv package management
-- **LRU caching** for conversation state management
-- **Pydantic schemas** for request/response validation
-
-### Observability & Monitoring
-- **Phoenix dashboard** at `localhost:6006` for trace visualization
-- **OpenInference instrumentation** specific to each framework
-- **Request/response tracing** with conversation context
-- **Performance metrics** and error tracking
-
-### Development Tools
-- **Automatic environment setup** with `./bin/bootstrap.sh`
-- **Hot reload** for development iterations
-- **Comprehensive logging** for debugging
-- **Standardized project structure** across all implementations
-
-## 🔧 Quick Start (Any Branch)
-
-1. **Choose your framework** - Switch to the branch you want to explore
-2. **Set up environment** - Run `./bin/bootstrap.sh` (installs Python 3.12 + uv automatically)
-3. **Configure API keys** - Create `.env` file with your OpenAI API key
-4. **Launch the stack** - Run `./bin/run_agent.sh --build`
-5. **Explore the demo** - Visit `localhost:8080` for the chat interface
-6. **Monitor with Phoenix** - Visit `localhost:6006` for observability
-
-## 📊 Framework Comparison
-
-### Complexity vs. Capability
-
-| Framework | Setup Complexity | Learning Curve | Capability | Best For |
-|-----------|------------------|----------------|------------|----------|
-| **OpenAI Direct** | Low | Low | Basic | Simple chatbots, prototyping |
-| **CrewAI** | Medium | Medium | High | Multi-agent workflows, team collaboration |
-| **LangGraph** | High | High | Very High | Complex state machines, conditional logic |
-| **Pydantic AI** | Low | Low | Medium | Type-safe applications, structured data |
-| **LiteLLM** | Low | Low | Medium | Multi-provider applications, vendor flexibility |
-| **DSPy** | Medium | Medium | High | Declarative prompting, optimization, research |
-
-### Key Differences
-
-**OpenAI Direct**
-- Minimal abstraction over OpenAI API
-- Direct control over all parameters
-- Simplest to understand and debug
-
-**CrewAI**
-- Multi-agent orchestration
-- Role-based agent definitions
-- Built-in task delegation and collaboration
-
-**LangGraph**
-- Graph-based workflow definition
-- Advanced state management
-- Conditional routing and complex logic flows
-
-**Pydantic AI**
-- Type-safe agent interactions
-- Built-in validation and structured outputs
-- Clean, pythonic API design
-
-**LiteLLM**
-- Unified API for 100+ LLM providers
-- Easy provider switching without code changes
-- Built-in cost tracking and fallback mechanisms
-
-**DSPy**
-- Declarative approach to LM programming
-- Automatic prompt optimization
-- Modular components (ChainOfThought, ReAct, etc.)
-- Research-focused with composability
-
-## 🛠️ Switching Between Implementations
-
-Each branch is fully self-contained. To explore a different framework:
-
+To re-run the containers without building:
 ```bash
-# Switch to desired framework branch
-git checkout <framework-branch>
-
-# Set up and activate the environment (if you want to make changes)
-./bin/bootstrap.sh && source .venv-{framework}/bin/activate.sh
-
-# Launch the application
-./bin/run_agent.sh --build
+./bin/run_agent.sh
 ```
 
-## 📁 Project Structure
+## Configuration
 
-All implementations follow this consistent structure:
+The agent is configured to use Groq's high-performance inference API with open-source models. This is controlled through environment variables in your `.env` file. The phoenix collector and fastapi endpoint will be fixed when running locally.
 
-```
-├── agent/
-│   ├── agent.py          # Core agent implementation (framework-specific)
-│   ├── server.py         # FastAPI server with observability
-│   ├── prompts.py        # Prompt templates and formatting
-│   ├── schema.py         # Pydantic models for validation
-│   ├── caching.py        # Conversation state management
-│   └── demo_code/        # Flask demo interface
-├── bin/
-│   ├── bootstrap.sh      # Environment setup script
-│   └── run_agent.sh      # Docker launch script
-├── Dockerfile            # Python 3.12 + uv container
-├── docker-compose.yml    # Multi-service orchestration
-├── requirements.txt      # Framework-specific dependencies
-└── README.md            # Framework-specific documentation
+### Environment Variables
+```env
+GROQ_API_KEY="your-groq-api-key"
+GROQ_OPENAI_MODEL="openai/gpt-oss-120b"
+GROQ_TEMPERATURE=0.1
+FASTAPI_URL="http://fastapi:8000"
+PHOENIX_COLLECTOR_ENDPOINT="http://phoenix:6006/v1/traces"
 ```
 
-## 🔍 Observability Features
+#### Environment Variables Explained:
+- **GROQ_API_KEY**: Your Groq API key for authentication. Get one from [console.groq.com](https://console.groq.com)
+- **GROQ_OPENAI_MODEL**: The model to use for inference. Default is `openai/gpt-oss-120b`. Other options include:
+  - `openai/gpt-oss-120b` - Large open-source model with 120B parameters
+  - `llama-3.1-70b-versatile` - Meta's Llama 3.1 70B model
+  - `llama-3.1-8b-instant` - Faster Llama 3.1 8B model
+  - `mixtral-8x7b-32768` - Mixtral model with large context window
+- **GROQ_TEMPERATURE**: Controls randomness in responses (0.0-2.0). Lower values = more deterministic. Default: 0.1
+- **FASTAPI_URL**: Internal URL for FastAPI server communication
+- **PHOENIX_COLLECTOR_ENDPOINT**: Phoenix observability collector endpoint
 
-All implementations include comprehensive observability through Phoenix:
+## Demo Interface
 
-- **Trace Visualization** - See complete request flows
-- **Performance Monitoring** - Track response times and errors
-- **Conversation Context** - View full conversation history
-- **Framework-Specific Metrics** - Understand framework internals
-- **Real-time Dashboards** - Monitor live agent interactions
+Once running, the demo will be available at:
+- Demo Interface: [localhost:8080](http://127.0.0.1:8080)
+- Phoenix Dashboard: [localhost:6006](http://127.0.0.1:6006)
 
-## 🎯 Learning Path Recommendations
+The interface allows you to:
+- Send messages to the bot
+- View the bot's responses
+- Review the requests being made and how they are processed step-by-step in Phoenix
 
-1. **Start with OpenAI Direct** - Understand the basics without framework abstractions
-2. **Explore Pydantic AI** - Learn type-safe agent development
-3. **Try LiteLLM** - Experience multi-provider flexibility and cost optimization
-4. **Experiment with DSPy** - Try declarative prompting and optimization
-5. **Experience CrewAI** - Build multi-agent orchestration systems
-6. **Master LangGraph** - Create complex, stateful agent workflows
+## Troubleshooting
 
-## 🤝 Contributing
+### Common Issues
 
-Each branch maintains the same application interface while showcasing different framework approaches. When contributing:
+1. **Phoenix Connection Error**
+   - Ensure Phoenix container is running
+   - Check PHOENIX_COLLECTOR_ENDPOINT in .env
 
-- Keep the core API consistent across implementations
-- Update framework-specific documentation in each branch
-- Ensure observability features work across all frameworks
-- Maintain the same development experience (bootstrap, run scripts, etc.)
+2. **API Key Issues**
+   - Verify GROQ_API_KEY is valid and active
+   - Check GROQ_OPENAI_MODEL is supported by your account
 
-## 📖 Further Reading
+3. **Container Build Issues**
+   - Run with --build flag: `./bin/run_agent.sh --build`
+   - Check Docker logs: `docker-compose logs`
+        - `docker-compose logs agent` for agent container logs
+        - `docker-compose logs phoenix` for phoenix container logs
 
-- **Phoenix Observability**: [Phoenix Documentation](https://docs.arize.com/phoenix)
-- **OpenInference Standards**: [OpenInference Specification](https://github.com/Arize-ai/openinference)
-- **Framework Documentation**: See individual branch READMEs for framework-specific guides
+## Development
 
----
+### Demo
+The demo logic is located in [agent/demo_code/demo_server.py](https://github.com/duncankmckinnon/AgentTemplate/tree/main/agent/demo_code). This contains all the logic for interactive chat demos.
+Key components:
 
-Choose a branch above to start exploring different approaches to building AI agents! Each implementation provides the same functionality with different architectural patterns and capabilities.
+- `demo_server.py`: Main Flask application (calls the REST API to avoid duplicate logic)
+- `templates/index.html`: Web interface for chat
+- `static/`: CSS and JavaScript files for running the chat interface
+
+### Server
+The server code is in [agent/server.py](https://github.com/duncankmckinnon/AgentTemplate/tree/main/agent/server.py). This contains the python fastAPI interface that processes chat requests. 
+The server is where the open-inference tracing is setup for the application. 
+
+### Agent
+The agent code is in [agent/agent.py](https://github.com/duncankmckinnon/AgentTemplate/tree/main/agent/agent.py). It instantiates the Groq client for requests in a setup method, and includes some basic open-telemetry and open-inference boilerplate for capturing information about requests and responses.
+The current implementation uses Groq's Python client with the OpenAI-compatible chat completions API. The request is sent to the agent via `client.chat.completions.create()` method.
+
+You probably wont really need to change the tracing or caching logic in the agent, unless there is specific context you need to include beyond the history of the chat.
+
+### Prompts
+The prompts and formatting are defined in [agent/prompts.py](https://github.com/duncankmckinnon/AgentTemplate/tree/main/agent/prompts.py). This class is meant to contain any prompt logic for LLM calls or individual agents. The benefit of the prompt class is that it provides an interface for passing in requests and context between steps and produces the formatting expected by the agentic framework or LLM client. 
+
+You will need to add your own prompts here for a specific application, and may need to adjust the formatting function to match Groq's expected input format (OpenAI-compatible).
+
+### Schema
+The schema is defined in [agent/schema.py](https://github.com/duncankmckinnon/AgentTemplate/tree/main/agent/schema.py). It provides validations and defaults for the requests and responses to the agent. The default schema is
+
+```python
+from pydantic import BaseModel, Field
+from typing import Optional
+from datetime import datetime
+
+class RequestFormat(BaseModel):
+    conversation_hash: str = Field(description="The conversation hash associated with the request")
+    request_timestamp: Optional[str] = Field(default=datetime.now().isoformat(), description="The timestamp of the request")
+    customer_message: str = Field(description="The message of the request")
+
+
+class ResponseFormat(BaseModel):
+    response: str = Field(description="The response to the request")
+```
+
+You may need to adjust this to handle other specific information the system needs to produce in the response or any intermediate validations for responses passed between LLMs.
+
+### Caching
+The built in caching logic is in [`agent/caching.py`](https://github.com/duncankmckinnon/AgentTemplate/tree/main/agent/caching.py). It implements a basic LRU cache to store requests and responses during the conversation and surface them on subsequent interactions within the session. 
+
+If you need to include additional context in the cache, the caching may need to be augmented to store other useful information separately (so it only needs to be retrieved and persisted one time - e.g. customer profile info).
+
+## Current Implementation Details
+
+This template is currently configured to use Groq with the following setup:
+
+### Agent Implementation
+- Uses `groq.Groq` client class with OpenAI-compatible API
+- Calls the LLM via `client.chat.completions.create()` method
+- Configured with Groq API key and model selection
+- Accesses response through standard OpenAI format: `response.choices[0].message.content`
+
+### Instrumentation
+The server includes Groq instrumentation for comprehensive tracing:
+```python
+from openinference.instrumentation.groq import GroqInstrumentor
+
+GroqInstrumentor().instrument(tracer_provider=tracer_provider)
+```
+
+### Dependencies
+Key packages in requirements.txt:
+- `groq>=0.1.0`
+- `openinference-instrumentation-groq>=0.0.1`
+- `openinference-instrumentation>=0.0.1`
+- `opentelemetry-sdk>=1.19.0`
+
+### Groq Advantages
+- **Ultra-fast inference**: Groq's custom silicon delivers lightning-fast responses
+- **Open-source models**: Access to latest open models like Llama, Mixtral
+- **OpenAI compatibility**: Drop-in replacement for OpenAI API calls
+- **Cost-effective**: Competitive pricing for high-performance inference
+
+## Changing to Other Frameworks
+
+If you need to switch to a different agentic framework, you can follow these general steps:
+1. Update the python package imports in `agent.py`
+2. Modify `setup_client()` to instantiate your preferred framework
+3. Update `analyze_request()` to call the client using the framework's conventions
+4. Find and install the appropriate OpenInference instrumentor package
+5. Update the imports and instrumentation setup in `server.py`
+6. Update requirements.txt with the new dependencies
+7. Modify environment variables as needed for the new framework
+
+## Groq Specific Features
+
+Groq provides high-performance inference for open-source models:
+- **Lightning Speed**: Custom silicon optimized for transformer inference
+- **Open Models**: Access to Llama, Mixtral, and other open-source models
+- **OpenAI API**: Compatible with existing OpenAI client libraries
+- **Reliability**: Enterprise-grade infrastructure with high availability
+- **Transparency**: Open-source models with clear licensing and capabilities
+
+For more advanced use cases, you can:
+- Switch between different Groq-supported models by changing GROQ_OPENAI_MODEL
+- Adjust temperature and other parameters for different use cases
+- Leverage Groq's speed for real-time applications requiring fast responses
+- Use different models for different tasks (e.g., fast models for simple queries, larger models for complex reasoning)

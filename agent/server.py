@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from agent.agent import Agent
 from phoenix.otel import register
-from openinference.instrumentation.openai import OpenAIInstrumentor
+from openinference.instrumentation.groq import GroqInstrumentor
 from agent.schema import RequestFormat, ResponseFormat
 from agent.caching import LRUCache
 from agent.constants import PROJECT_NAME
@@ -18,7 +18,7 @@ tracer_provider = register(
 )
 
 # Template uses OpenAI, but any LLM provider or agentic framework can be plugged in
-OpenAIInstrumentor().instrument(tracer_provider=tracer_provider)
+GroqInstrumentor().instrument(tracer_provider=tracer_provider)
 
 app = FastAPI()
 cache = LRUCache()
